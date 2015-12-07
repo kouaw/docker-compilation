@@ -1,12 +1,10 @@
 #!/bin/bash
 echo 'Start init'
 
-if [ -z ${ROOT_PASSWORD} ]; then
-	echo "Use default password : root"
-	echo "root:root" | chpasswd
-else
-	echo "root:${ROOT_PASSWORD}" | chpasswd
+cd /root
+if [ -d /root/compilation-multiplateforme ]; then
+	rm -rf /root/compilation-multiplateforme
 fi
-
-/usr/bin/supervisord
-
+git clone git@github.com:jeedom/compilation-multiplateforme.git
+cd compilation-multiplateforme/
+./compile-enocean.sh
