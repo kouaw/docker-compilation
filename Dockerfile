@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM ubuntu:14.04
 
 MAINTAINER loic
 
@@ -31,7 +31,16 @@ RUN echo "root:${SHELL_ROOT_PASSWORD}" | chpasswd && \
 RUN mkdir -p /var/run/sshd /var/log/supervisor
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-####################################################################PHPMYADMIN#######################################################################################
+####################################################################MULTIARCH#######################################################################################
+
+RUN dpkg --add-architecture armhf
+RUN dpkg --add-architecture armel
+RUN sed -i -e 's/deb /deb [arch=amd64] /g' /etc/apt/sources.list
+RUN echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports  trusty main universe" >> /etc/apt/sources.list
+RUN apt-get update
+
+####################################################################AUTRE#######################################################################################
+
 
 ADD bashrc /root/.bashrc
 ADD init.sh /root/init.sh
