@@ -28,6 +28,8 @@ RUN dpkg --add-architecture armel
 RUN sed -i -e 's/deb /deb [arch=amd64] /g' /etc/apt/sources.list
 RUN echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports  trusty main universe" >> /etc/apt/sources.list
 RUN apt-get update
+RUN git config --global user.email "encoean@jeedom.com"
+RUN git config --global user.name "robot compilation"
 
 ####################################################################AUTRE#######################################################################################
 
