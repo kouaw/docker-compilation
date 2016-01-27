@@ -14,7 +14,6 @@ echo "DROP DATABASE IF EXISTS ${MYSQL_JEEDOM_DBNAME};" | mysql -uroot -p${bdd_ro
 echo "CREATE DATABASE ${MYSQL_JEEDOM_DBNAME};" | mysql -uroot -p${bdd_root_password}
 echo "GRANT ALL PRIVILEGES ON ${MYSQL_JEEDOM_DBNAME}.* TO '${MYSQL_JEEDOM_USER}'@'%';" | mysql -uroot -p${bdd_root_password}
 
-
 mkdir -p /var/www/html/log
 apt-get -y install ntp ca-certificates unzip curl sudo
 apt-get -y install apache2 php5 libapache2-mod-php5
@@ -28,20 +27,19 @@ mkdir -p /var/www/html
 rm -rf /root/core-*
 wget https://github.com/jeedom/core/archive/beta.zip -O /tmp/jeedom.zip
 unzip -q /tmp/jeedom.zip -d /root/
-cp -R /root/core-*/* /var/www/html/
-cp -R /root/core-*/.htaccess /var/www/html/
-
-cp core/config/common.config.sample.php ${WEBSERVER_HOME}/core/config/common.config.php
+cp -R /root/core-*/* ${WEBSERVER_HOME}
+cp -R /root/core-*/.htaccess ${WEBSERVER_HOME}
+rm -rf /root/core-*
+cd ${WEBSERVER_HOME}
+cp ${WEBSERVER_HOME}/core/config/common.config.sample.php ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#PASSWORD#/${bdd_password}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#DBNAME#/${MYSQL_JEEDOM_DBNAME}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#USERNAME#/${MYSQL_JEEDOM_USER}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#PORT#/${MYSQL_PORT}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#HOST#/${MYSQL_HOST}/g" ${WEBSERVER_HOME}/core/config/common.config.php
-chown www-data:www-data ${WEBSERVER_HOME}/core/config/common.config.php
 
 chmod 775 -R ${WEBSERVER_HOME}
 chown -R www-data:www-data ${WEBSERVER_HOME}
-cd ${WEBSERVER_HOME}
 
 php ${WEBSERVER_HOME}/install/install.php mode=force
 
