@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 
 deb_mirror="http://archive.raspbian.org/raspbian"
 #deb_local_mirror="http://localhost:3142/archive.raspbian.org/raspbian"
@@ -28,6 +27,10 @@ relative_path=`dirname $0`
 # locate path of this script
 absolute_path=`cd ${relative_path}; pwd`
 
+if [ -f "${absolute_path}/../delivery" ]; then
+  mkdir ${absolute_path}/../delivery
+fi
+
 # locate path of delivery content
 delivery_path=`cd ${absolute_path}/../delivery; pwd`
 
@@ -47,8 +50,8 @@ image=""
 if [ "${device}" == "" ]; then
   echo "no block device given, just creating an image"
   mkdir -p ${buildenv}
-  image="${buildenv}/rpi_de_${rpi_release}_${deb_release}_${today}.img"
-  dd if=/dev/zero of=${image} bs=1MB count=1024
+  image="${buildenv}/rpi_fr_${rpi_release}_${deb_release}_${today}.img"
+  dd if=/dev/zero of=${image} bs=1MB count=2048
   device=`losetup -f --show ${image}`
   echo "image ${image} created and mounted as ${device}"
 else
@@ -158,10 +161,10 @@ mkdir -p /lib/modules/3.1.9+
 touch /boot/start.elf
 rpi-update
 apt-get -y install locales console-common ntp openssh-server less vim nano
-echo \"root:raspberry\" | chpasswd
-echo "de_DE ISO-8859-1" >> /etc/locale.gen
+echo \"root:Mjeedom96\" | chpasswd
+echo "fr_FR ISO-8859-1" >> /etc/locale.gen
 locale-gen
-echo 'LANG="de_DE"' >> /etc/default/locale
+echo 'LANG="fr_FR"' >> /etc/default/locale
 echo "alias ls='ls --color=auto'" >> /etc/bash.bashrc
 # execute install script at mounted external media (delivery contents folder)
 cd /usr/src/delivery
@@ -186,25 +189,7 @@ rm -f cleanup
 chmod +x cleanup
 LANG=C chroot ${rootfs} /cleanup
 
-echo "#!/bin/bash
-mkdir -p /var/www/html/log
-apt-get -y install ntp ca-certificates unzip curl sudo
-apt-get install apache2 php5 mysql-client mysql-server libapache2-mod-php5
-apt-get -y install php5-cli php5-common php5-curl php5-fpm php5-json php5-mysql php5-gd
-wget https://raw.githubusercontent.com/jeedom/core/beta/install/apache_security -O /etc/apache2/conf-available/security.conf
-systemctl restart apache2
-rm /var/www/html/index.html
-echo \"* * * * * su --shell=/bin/bash - www-data -c '/usr/bin/php /var/www/html/core/php/jeeCron.php' >> /dev/null\" | crontab -
-echo \"www-data ALL=(ALL) NOPASSWD: ALL\" | (EDITOR=\"tee -a\" visudo)
-mkdir -p /var/www/html
-rm -rf /root/core-*
-wget https://github.com/jeedom/core/archive/beta.zip -O /tmp/jeedom.zip
-unzip -q /tmp/jeedom.zip -d /root/
-cp -R /root/core-*/* /var/www/html/
-cp -R /root/core-*/.htaccess /var/www/html/
-rm -f /tmp/jeedom.zip
-rm -f /jeedom
-" > jeedom
+cp ${absolute_path}/install-jeedom.sh jeedom
 chmod +x jeedom
 LANG=C chroot ${rootfs} /jeedom
 

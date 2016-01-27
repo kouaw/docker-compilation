@@ -26,7 +26,8 @@ locate
 RUN apt-get install binfmt-support qemu qemu-user-static debootstrap kpartx lvm2 dosfstools apt-cacher-ng coreutils
 
 ####################################################################AUTRE#######################################################################################
-
+ADD init.sh /root/install-jeedom.sh
+RUN chmod +x /root/install-jeedom.sh
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
 CMD ["/root/init.sh"]
