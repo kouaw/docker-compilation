@@ -152,7 +152,7 @@ debconf-set-selections /debconf.set
 rm -f /debconf.set
 cd /usr/src/delivery
 apt-get update
-apt-get -y install git-core binutils ca-certificates lua5.1 triggerhappy whiptail parted 
+apt-get -y install git-core binutils ca-certificates lua5.1 triggerhappy whiptail parted curl wget
 wget --continue https://raw.github.com/asb/raspi-config/master/raspi-config -O /usr/bin/raspi-config
 chmod +x /usr/bin/raspi-config
 wget --continue https://raw.github.com/Hexxeh/rpi-update/master/rpi-update -O /usr/bin/rpi-update
