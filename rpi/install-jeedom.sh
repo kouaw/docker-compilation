@@ -18,14 +18,14 @@ mkdir -p /var/www/html/log
 apt-get -y install ntp ca-certificates unzip curl sudo
 apt-get -y install apache2 php5 libapache2-mod-php5
 apt-get -y install php5-cli php5-common php5-curl php5-fpm php5-json php5-mysql php5-gd
-wget https://raw.githubusercontent.com/jeedom/core/beta/install/apache_security -O /etc/apache2/conf-available/security.conf
+wget https://raw.githubusercontent.com/jeedom/core/stable/install/apache_security -O /etc/apache2/conf-available/security.conf
 systemctl restart apache2
 rm /var/www/html/index.html
 echo "* * * * * su --shell=/bin/bash - www-data -c '/usr/bin/php /var/www/html/core/php/jeeCron.php' >> /dev/null" | crontab -
 echo 'www-data ALL=(ALL) NOPASSWD: ALL' | (EDITOR='tee -a' visudo)
 mkdir -p /var/www/html
 rm -rf /root/core-*
-wget https://github.com/jeedom/core/archive/beta.zip -O /tmp/jeedom.zip
+wget https://github.com/jeedom/core/archive/stable.zip -O /tmp/jeedom.zip
 unzip -q /tmp/jeedom.zip -d /root/
 cp -R /root/core-*/* ${WEBSERVER_HOME}
 cp -R /root/core-*/.htaccess ${WEBSERVER_HOME}
