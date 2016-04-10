@@ -4,12 +4,12 @@ MYSQL_HOST=localhost
 MYSQL_PORT=3306
 MYSQL_JEEDOM_USER=jeedom
 MYSQL_JEEDOM_DBNAME=jeedom
-bdd_root_password=$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 15)
+bdd_root_password=Mjeedom96
 echo "mysql-server mysql-server/root_password password ${bdd_root_password}" | debconf-set-selections
 echo "mysql-server mysql-server/root_password_again password ${bdd_root_password}" | debconf-set-selections
 apt-get -y install mysql-client mysql-common mysql-server
 echo "DROP USER '${MYSQL_JEEDOM_USER}'@'%';" | mysql -uroot -p${bdd_root_password}
-echo "CREATE USER '${MYSQL_JEEDOM_USER}'@'%' IDENTIFIED BY '${bdd_password}';" | mysql -uroot -p${bdd_root_password}
+echo "CREATE USER '${MYSQL_JEEDOM_USER}'@'%' IDENTIFIED BY '${bdd_root_password}';" | mysql -uroot -p${bdd_root_password}
 echo "DROP DATABASE IF EXISTS ${MYSQL_JEEDOM_DBNAME};" | mysql -uroot -p${bdd_root_password}
 echo "CREATE DATABASE ${MYSQL_JEEDOM_DBNAME};" | mysql -uroot -p${bdd_root_password}
 echo "GRANT ALL PRIVILEGES ON ${MYSQL_JEEDOM_DBNAME}.* TO '${MYSQL_JEEDOM_USER}'@'%';" | mysql -uroot -p${bdd_root_password}
@@ -32,7 +32,7 @@ cp -R /root/core-*/.htaccess ${WEBSERVER_HOME}
 rm -rf /root/core-*
 cd ${WEBSERVER_HOME}
 cp ${WEBSERVER_HOME}/core/config/common.config.sample.php ${WEBSERVER_HOME}/core/config/common.config.php
-sed -i "s/#PASSWORD#/${bdd_password}/g" ${WEBSERVER_HOME}/core/config/common.config.php
+sed -i "s/#PASSWORD#/${bdd_root_password}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#DBNAME#/${MYSQL_JEEDOM_DBNAME}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#USERNAME#/${MYSQL_JEEDOM_USER}/g" ${WEBSERVER_HOME}/core/config/common.config.php
 sed -i "s/#PORT#/${MYSQL_PORT}/g" ${WEBSERVER_HOME}/core/config/common.config.php
