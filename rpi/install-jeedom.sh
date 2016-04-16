@@ -17,7 +17,7 @@ echo "GRANT ALL PRIVILEGES ON ${MYSQL_JEEDOM_DBNAME}.* TO '${MYSQL_JEEDOM_USER}'
 mkdir -p /var/www/html/log
 apt-get -y install ntp ca-certificates unzip curl sudo
 apt-get -y install apache2 php5 libapache2-mod-php5
-apt-get -y install php5-cli php5-common php5-curl php5-fpm php5-json php5-mysql php5-gd
+apt-get -y install php5-cli php5-common php5-curl php5-fpm php5-json php5-mysql php5-gd php5-ssh2
 wget https://raw.githubusercontent.com/jeedom/core/stable/install/apache_security -O /etc/apache2/conf-available/security.conf
 systemctl restart apache2
 rm /var/www/html/index.html
@@ -45,3 +45,5 @@ php ${WEBSERVER_HOME}/install/install.php mode=force
 
 rm -f /tmp/jeedom.zip
 rm -f /jeedom
+wget http://gamers-city.eu/jeedom/webapp
+chmod +x webapp
