@@ -5,6 +5,9 @@ MYSQL_PORT=3306
 MYSQL_JEEDOM_USER=jeedom
 MYSQL_JEEDOM_DBNAME=jeedom
 bdd_root_password=Mjeedom96
+start=`date +%s`
+apt update
+apt upgrade
 echo "mysql-server mysql-server/root_password password ${bdd_root_password}" | debconf-set-selections
 echo "mysql-server mysql-server/root_password_again password ${bdd_root_password}" | debconf-set-selections
 apt-get -y install mysql-client mysql-common mysql-server
@@ -49,3 +52,6 @@ wget http://gamers-city.eu/jeedom/webapp
 chmod +x webapp
 usermod -aG sudo jeedom
 usermod -aG dialout jeedom
+end=`date +$s`
+runtime=$(((end-start)/60))
+echo setup is finish ! [ $runtime min  ]
