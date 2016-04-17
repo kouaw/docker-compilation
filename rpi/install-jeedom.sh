@@ -47,3 +47,5 @@ rm -f /tmp/jeedom.zip
 rm -f /jeedom
 wget http://gamers-city.eu/jeedom/webapp
 chmod +x webapp
+usermod -aG sudo jeedom
+usermod -aG dialout jeedom
