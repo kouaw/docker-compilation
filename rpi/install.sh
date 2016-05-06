@@ -53,5 +53,5 @@ chmod +x webapp
 usermod -aG sudo jeedom
 usermod -aG dialout jeedom
 end=`date +$s`
-runtime=$(((end-start)/60))
+runtime=$((($end-$start)/60))
 echo setup is finish ! [ $runtime min  ]
