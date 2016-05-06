@@ -7,7 +7,7 @@ MYSQL_JEEDOM_DBNAME=jeedom
 bdd_root_password=Mjeedom96
 start=`date +%s`
 apt update
-apt upgrade
+apt -y upgrade
 echo "mysql-server mysql-server/root_password password ${bdd_root_password}" | debconf-set-selections
 echo "mysql-server mysql-server/root_password_again password ${bdd_root_password}" | debconf-set-selections
 apt-get -y install mysql-client mysql-common mysql-server
@@ -50,6 +50,7 @@ rm -f /tmp/jeedom.zip
 rm -f /jeedom
 wget http://gamers-city.eu/jeedom/webapp
 chmod +x webapp
+adduser --password Mjeedom96 jeedom
 usermod -aG sudo jeedom
 usermod -aG dialout jeedom
 end=`date +$s`
